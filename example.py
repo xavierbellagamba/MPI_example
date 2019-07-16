@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 import os
 import sys
+from datetime import datetime
 
 def generateIndKFold(K, n):
     '''
@@ -53,12 +54,13 @@ def main():
     ind_K = np.zeros(y.shape).astype(int)
 
     #Parameters to test
-    learning_rate = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001]
-    N_estimator = [10, 20, 50, 100]
+    learning_rate = [0.05, 0.01, 0.005, 0.001]
+    N_estimator = [20, 50, 100, 200, 500, 750]
 
 
     #Manager
     if rank == rootRank:
+        startTime = datetime.now()
         #Prepare CV
         '''
         Indices are yet unavailableto the workers
@@ -163,6 +165,7 @@ def main():
         print('Best number of estimators: ', N_best)
         print('Mean CV error of best model (accuracy): ', CV_min)
         print('Standard deviation of the best model CV error (accuracy): ', CV_min_std)
+        print('Runtime: ', datetime.now() - startTime)
 
     #Worker
     else:
